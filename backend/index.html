@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simple Chat</title>
+    <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+    <div class="w-full max-w-md mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
+        <div class="bg-indigo-600 text-white p-4 text-xl font-semibold">Chat Room</div>
+
+        <div id="messages" class="p-4 h-80 overflow-y-auto space-y-2 text-sm text-gray-800 bg-gray-50"></div>
+
+        <div class="flex border-t p-2">
+            <input id="messageInput" type="text" placeholder="Type a message..."
+                class="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+            <button onclick="sendMessage()"
+                class="ml-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">Send</button>
+        </div>
+    </div>
+
+    <script>
+        const socket = io('http://localhost:3030');
+        const messages = document.getElementById('messages');
+        const input = document.getElementById('messageInput');
+
+        function addMessage(content, type = 'normal') {
+            const div = document.createElement('div');
+            div.classList.add('px-2', 'py-1', 'rounded', 'max-w-[80%]');
+
+            if (type === 'normal') {
+                div.classList.add('bg-indigo-100', 'text-indigo-900');
+                div.textContent = content.message;
+            } else if (type === 'user-joined') {
+                div.classList.add('bg-yellow-100', 'text-gray-700');
+                div.textContent = content.message;
+            } else {
+                div.classList.add('bg-red-100', 'text-gray-700');
+                div.textContent = content.message;
+            }
+
+            messages.appendChild(div);
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        socket.on('connect', () => {
+            console.log('Connected to server');
+        });
+
+        socket.on('user-joined', (response) => addMessage(response, 'user-joined'));
+        socket.on('user-left', (response) => addMessage(response, 'user-left'));
+        socket.on('message', (response) => addMessage(response));
+
+        function sendMessage() {
+            const text = input.value.trim();
+            if (text) {
+                socket.emit('newMessage', text);
+                input.value = '';
+            }
+        }
+
+        // Optional: Enter key support
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,62 @@
+# General ignores
+.DS_Store
+node_modules
+/dist
+/build
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# OS-specific files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# IDEs and editors
+.idea/
+.vscode/
+*.sublime-workspace
+*.code-workspace
+
+# Tests
+/coverage
+/.nyc_output
+
+# dotenv environment variable files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Temporary files
+.temp
+.tmp
+*.pid
+*.seed
+*.pid.lock
+
+# Diagnostic reports
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# Vite-specific
+.vite
+*.vite.cache
+
+# Backend-specific
+/backend/node_modules
+/backend/dist
+/backend/.env
+/backend/.temp
+/backend/.tmp
+
+# Frontend-specific
+/frontend/node_modules
+/frontend/dist
+/frontend/.env
+/frontend/.temp
+/frontend/.tmp

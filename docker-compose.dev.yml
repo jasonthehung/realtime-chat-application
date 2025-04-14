@@ -1,0 +1,21 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+      - "3030:3030"
+    volumes:
+      - ./backend:/usr/src/app/backend
+      - ./backend/node_modules # Prevent host modules from overwriting container modules
+    command: npm run start:dev
+    develop:
+      watch:
+        - action: sync
+          path: ./src
+          target: /usr/src/app/backend/src
+        - action: rebuild
+          path: ./backend/package.json

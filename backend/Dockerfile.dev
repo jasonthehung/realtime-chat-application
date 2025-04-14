@@ -1,0 +1,21 @@
+# ✅ Use the official Node.js v20 image (alpine = lightweight version)
+FROM node:20-alpine
+
+# 📁 Set the working directory inside the container
+WORKDIR /usr/src/app/backend
+
+# 📦 Copy dependency info first (so Docker can cache this layer)
+COPY package*.json ./
+
+# 🚀 Install all dependencies (including devDependencies for hot-reload)
+RUN npm install
+
+# 🧠 Copy the rest of the source code into the container
+COPY . .
+
+# 🌐 Expose ports used by the app (3000 = HTTP, 3030 = maybe WebSocket or DevTool)
+EXPOSE 3000
+EXPOSE 3030
+
+# 🌀 Start the app in dev mode with hot-reloading (using ts-node / nodemon)
+CMD ["npm", "run", "start:dev"]
