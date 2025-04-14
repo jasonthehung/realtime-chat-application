@@ -9,8 +9,8 @@ services:
       - "3000:3000"
       - "3030:3030"
     volumes:
-      - ./backend:/usr/src/app/backend
-      - ./backend/node_modules # Prevent host modules from overwriting container modules
+      - ${PWD}/backend:/usr/src/app/backend
+      - ${PWD}/backend/node_modules # Prevent host modules from overwriting container modules
     command: npm run start:dev
     develop:
       watch:
